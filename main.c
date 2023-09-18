@@ -8,13 +8,13 @@ struct Data{
     int ano;
 };
 
-int recebeData (struct Data *data){
-    printf("Digite o dia: ");
-    scanf("%d", &data->dia);
-    printf("Digite o mes: ");
-    scanf("%d", &data->mes);
-    printf("Digite o ano: ");
-    scanf("%d", &data->ano);
+int recebeData(int *dia, int *mes, int *ano){
+    time_t mytime;
+    mytime = time(NULL);
+    struct tm tm = *localtime(&mytime);
+    *dia = tm.tm_mday;
+    *mes = tm.tm_mon + 1;
+    *ano = tm.tm_year + 1900;
     return 0;
 }
 
@@ -45,7 +45,10 @@ int main(){
     system("cls");
     menu();
 
-
+    /// Recebe data atual
+    int dd, mm, aa;
+    recebeData(&dd, &mm, &aa);
+    printf("Data: %d/%d/%d\n", dd, mm, aa);
 
     return 0;
 }
