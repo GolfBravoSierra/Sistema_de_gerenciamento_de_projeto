@@ -38,12 +38,46 @@ void menu(){
     printf("8. Sair do programa\n");
 }
 
-
+void selecionaMenu(){
+    int opcao;
+    scanf("%d", &opcao);
+    system("cls");
+    switch(opcao){
+        case 1:
+            printf("Adicionar uma nova tarefa\n");
+            break;
+        case 2:
+            printf("Modificar uma tarefa\n");
+            break;
+        case 3:
+            printf("Concluir uma tarefa\n");
+            break;
+        case 4:
+            printf("Atualizacao do status da tarefa\n");
+            break;
+        case 5:
+            printf("Listar tarefas pendentes\n");
+            break;
+        case 6:
+            printf("Listar tarefas concluidas\n");
+            break;
+        case 7:
+            printf("Listar tarefas concluidas com e sem atraso\n");
+            break;
+        case 8:
+            printf("Sair do programa\n");
+            break;
+        default:
+            printf("Opcao invalida\n");
+            break;
+    }
+}
 
 int main(){
 
     system("cls");
     menu();
+    selecionaMenu();
 
     /// Recebe data atual
     int dd, mm, aa;
