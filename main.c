@@ -18,11 +18,11 @@ void menu(){
 
 
 /// Inicio do bloco para receber a data do sistema
-struct Data{
+typedef struct Data{
     int dia;
     int mes;
     int ano;
-};
+} Data;
 
 int recebeData(int *dia, int *mes, int *ano){
     time_t mytime;
@@ -40,12 +40,8 @@ int recebeData(int *dia, int *mes, int *ano){
     int codigoTarefa;
     char nomeTarefa;
     char nomeProjeto;
-    int dataInicio_dia;
-    int dataInicio_mes;
-    int dataInicio_ano;
-    int dataTermino_dia;
-    int dataTermino_mes;
-    int dataTermino_ano;
+    Data dataInicio;
+    Data dataTermino;
     int status;
 } Tarefa;
 
@@ -92,28 +88,28 @@ Tarefa modificatarefa (int codigotarefa){
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
-        scanf("%d", &tarefa.dataInicio_dia);
-        }while(tarefa.dataInicio_dia > 31 || tarefa.dataInicio_dia < 1);
+        scanf("%d", &tarefa.dataInicio.dia);
+        }while(tarefa.dataInicio.dia > 31 || tarefa.dataInicio.dia < 1);
     do{
         printf("\nDigite o mes: ");
-        scanf("%d", &tarefa.dataInicio_mes);
-        }while(tarefa.dataInicio_mes > 12 || tarefa.dataInicio_mes < 1);
+        scanf("%d", &tarefa.dataInicio.mes);
+        }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
         printf("\nDigite o ano: ");
-        scanf("%d", &tarefa.dataInicio_ano);
-    printf("\nData de inicio da tarefa: %d/%d/%d", tarefa.dataInicio_dia, tarefa.dataInicio_mes, tarefa.dataInicio_ano);
+        scanf("%d", &tarefa.dataInicio.ano);
+    printf("\nData de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.ano, tarefa.dataInicio.ano, tarefa.dataInicio.ano);
     
     printf("\ndigite a data de termino: (dia/mes/ano)\n");
     do{
         printf("\nDigite o dia: ");
-        scanf("%d", &tarefa.dataTermino_dia);
-        }while(tarefa.dataTermino_dia > 31 || tarefa.dataTermino_dia < 1);
+        scanf("%d", &tarefa.dataTermino.dia);
+        }while(tarefa.dataTermino.dia > 31 || tarefa.dataTermino.dia < 1);
     do{
         printf("\nDigite o mes: ");
-        scanf("%d", &tarefa.dataTermino_mes);
-        }while(tarefa.dataTermino_mes > 12 || tarefa.dataTermino_mes < 1);
+        scanf("%d", &tarefa.dataTermino.mes);
+        }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
         printf("\nDigite o ano: ");
-    scanf("%d", &tarefa.dataTermino_ano);
-    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino_dia, tarefa.dataTermino_mes, tarefa.dataTermino_ano);
+    scanf("%d", &tarefa.dataTermino.ano);
+    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     
     return tarefa;
 }
@@ -130,28 +126,28 @@ Tarefa novatarefa(){
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
-        scanf("%d", &tarefa.dataInicio_dia);
-        }while(tarefa.dataInicio_dia > 31 || tarefa.dataInicio_dia < 1);
+        scanf("%d", &tarefa.dataInicio.dia);
+        }while(tarefa.dataInicio.dia > 31 || tarefa.dataInicio.dia < 1);
     do{
         printf("\nDigite o mes: ");
-        scanf("%d", &tarefa.dataInicio_mes);
-        }while(tarefa.dataInicio_mes > 12 || tarefa.dataInicio_mes < 1);
+        scanf("%d", &tarefa.dataInicio.mes);
+        }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
         printf("\nDigite o ano: ");
-        scanf("%d", &tarefa.dataInicio_ano);
-    printf("\nData de inicio da tarefa: %d/%d/%d", tarefa.dataInicio_dia, tarefa.dataInicio_mes, tarefa.dataInicio_ano);
+        scanf("%d", &tarefa.dataInicio.ano);
+    printf("\nData de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
     printf("\ndigite a data de termino: (dia/mes/ano)\n");
     do{
         printf("\nDigite o dia: ");
-        scanf("%d", &tarefa.dataTermino_dia);
-        }while(tarefa.dataTermino_dia > 31 || tarefa.dataTermino_dia < 1);
+        scanf("%d", &tarefa.dataTermino.dia);
+        }while(tarefa.dataTermino.dia > 31 || tarefa.dataTermino.dia < 1);
     do{
         printf("\nDigite o mes: ");
-        scanf("%d", &tarefa.dataTermino_mes);
-        }while(tarefa.dataTermino_mes > 12 || tarefa.dataTermino_mes < 1);
+        scanf("%d", &tarefa.dataTermino.mes);
+        }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
         printf("\nDigite o ano: ");
-    scanf("%d", &tarefa.dataTermino_ano);
-    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino_dia, tarefa.dataTermino_mes, tarefa.dataTermino_ano);
+    scanf("%d", &tarefa.dataTermino.ano);
+    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     return tarefa;
 };
 
@@ -161,7 +157,6 @@ void insereFila(Fila* fila, Tarefa tarefa){
     if(fila->ini==NULL)/*fila antes vazia?*/
     fila->ini=fila->fim;
     printf("\n\n\ttest1\n");
-    imprime(fila);
     menu();
 };
 
@@ -193,8 +188,8 @@ void imprimeFila(Fila *fila){
         printf("Codigo da tarefa: %d\n", aux->tarefa.codigoTarefa);
         printf("Nome da tarefa: %s\n", aux->tarefa.nomeTarefa);
         printf("Nome do projeto: %s\n", aux->tarefa.nomeProjeto);
-        printf("Data de inicio da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataInicio_dia, aux->tarefa.dataInicio_mes, aux->tarefa.dataInicio_ano);
-        printf("Data de termino da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataTermino_dia, aux->tarefa.dataTermino_mes, aux->tarefa.dataTermino_ano);
+        printf("Data de inicio da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataInicio.dia, aux->tarefa.dataInicio.mes, aux->tarefa.dataInicio.ano);
+        printf("Data de termino da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataTermino.dia, aux->tarefa.dataTermino.mes, aux->tarefa.dataTermino.ano);
         printf("Status da tarefa: %d\n", aux->tarefa.status);
         printf("\n");
         aux = aux->prox;
@@ -215,7 +210,7 @@ void selecionaMenu(){
             tarefa = novatarefa();
             insereFila(fila , tarefa);
             printf("\n\t\tteste2\n");
-            imprime(fila);
+            ///imprime(fila);
             break;
         case 2:
         /* programa pergunta o código da tarefa que deseja altera; cria uma nova tarefa com o mesmo código 
