@@ -3,19 +3,7 @@
 #include <time.h>
 
 //void selecionaMenu(); // protótipo da função
-
-void menu(){
-    printf("1. Adicionar uma nova tarefa\n");
-    printf("2. Modificar uma tarefa\n");
-    printf("3. Concluir uma tarefa\n");
-    printf("4. Atualizacao do status da tarefa\n");
-    printf("5. Listar tarefas pendentes\n");
-    printf("6. Listar tarefas concluidas\n");
-    printf("7. Listar tarefas concluidas com e sem atraso\n");
-    printf("8. Sair do programa\n");
-    
-}
-
+void menu();
 
 /// Inicio do bloco para receber a data do sistema
 typedef struct Data{
@@ -24,15 +12,7 @@ typedef struct Data{
     int ano;
 } Data;
 
-int recebeData(int *dia, int *mes, int *ano){
-    time_t mytime;
-    mytime = time(NULL);
-    struct tm tm = *localtime(&mytime);
-    *dia = tm.tm_mday;
-    *mes = tm.tm_mon + 1;
-    *ano = tm.tm_year + 1900;
-    return 0;
-}
+int recebeData(int *dia, int *mes, int *ano);
 /// Fim do bloco para receber data
 
 /// Estrutura da tarefa
@@ -251,5 +231,27 @@ while(i == 0){
 }
 
 
+    return 0;
+}
+
+void menu(){
+    printf("1. Adicionar uma nova tarefa\n");
+    printf("2. Modificar uma tarefa\n");
+    printf("3. Concluir uma tarefa\n");
+    printf("4. Atualizacao do status da tarefa\n");
+    printf("5. Listar tarefas pendentes\n");
+    printf("6. Listar tarefas concluidas\n");
+    printf("7. Listar tarefas concluidas com e sem atraso\n");
+    printf("8. Sair do programa\n");
+    
+}
+
+int recebeData(int *dia, int *mes, int *ano){
+    time_t mytime;
+    mytime = time(NULL);
+    struct tm tm = *localtime(&mytime);
+    *dia = tm.tm_mday;
+    *mes = tm.tm_mon + 1;
+    *ano = tm.tm_year + 1900;
     return 0;
 }
