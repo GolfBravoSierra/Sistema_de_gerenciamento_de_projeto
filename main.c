@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
-void selecionaMenu(); // protótipo da função
+//void selecionaMenu(); // protótipo da função
 
 void menu(){
     printf("1. Adicionar uma nova tarefa\n");
@@ -13,7 +13,7 @@ void menu(){
     printf("6. Listar tarefas concluidas\n");
     printf("7. Listar tarefas concluidas com e sem atraso\n");
     printf("8. Sair do programa\n");
-    selecionaMenu();
+    
 }
 
 
@@ -38,8 +38,8 @@ int recebeData(int *dia, int *mes, int *ano){
 /// Estrutura da tarefa
  typedef struct Tarefa{
     int codigoTarefa;
-    char nomeTarefa;
-    char nomeProjeto;
+    char nomeTarefa[30];
+    char nomeProjeto[30];
     Data dataInicio;
     Data dataTermino;
     int status;
@@ -78,13 +78,14 @@ No* ins_fim(No* fim, Tarefa A){
 
 //função para modificar uma tarefa
 Tarefa modificatarefa (int codigotarefa){
-    int flag = 0;
+   // int flag = 0;
     Tarefa tarefa;
     tarefa.codigoTarefa = codigotarefa;
+    while (getchar() != '\n');
     printf("\nDigite o nome da tarefa: ");
-    scanf("%s", &tarefa.nomeTarefa);
+    gets(tarefa.nomeTarefa);
     printf("\nDigite o nome do projeto: ");
-    scanf("%s", &tarefa.nomeProjeto);
+    gets(tarefa.nomeProjeto);
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
@@ -119,10 +120,11 @@ Tarefa novatarefa(){
     Tarefa tarefa;
     printf("\nDigite o codigo da tarefa: ");
     scanf("%d", &tarefa.codigoTarefa);
+    while (getchar() != '\n');
     printf("\nDigite o nome da tarefa: ");
-    scanf("%s", &tarefa.nomeTarefa);
+    gets(tarefa.nomeTarefa);
     printf("\nDigite o nome do projeto: ");
-    scanf("%s", &tarefa.nomeProjeto);
+    gets(tarefa.nomeProjeto);
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
@@ -156,8 +158,6 @@ void insereFila(Fila* fila, Tarefa tarefa){
     fila->fim=ins_fim(fila->fim,tarefa);
     if(fila->ini==NULL)/*fila antes vazia?*/
     fila->ini=fila->fim;
-    printf("\n\n\ttest1\n");
-    menu();
 };
 
 
@@ -170,20 +170,17 @@ Fila *trocatarefa(Fila *fila , int codigotarefa , Tarefa tarefa){
             printf("Tarefa encontrada\n");
 
             aux->tarefa = tarefa;
-            return fila;
-            menu();
         }
         aux = aux->prox;
     }
     
-    printf("Tarefa nao encontrada\n");
+    return fila;
     menu();
 }
 
 /// Imprime a fila inteira
 void imprimeFila(Fila *fila){
     No *aux = fila->ini;
-    printf("verificando funcao");
     while(aux != NULL){
         printf("Codigo da tarefa: %d\n", aux->tarefa.codigoTarefa);
         printf("Nome da tarefa: %s\n", aux->tarefa.nomeTarefa);
@@ -196,8 +193,12 @@ void imprimeFila(Fila *fila){
     }
 }
 
-void selecionaMenu(){
+int main(){
+
+    int i = 0;
     Fila *fila = criaFila();
+while(i == 0){
+    menu();
     int opcao = 0;
     scanf("%d", &opcao);
     system("cls");
@@ -209,8 +210,7 @@ void selecionaMenu(){
             printf("\nAdicionar uma nova tarefa\n");
             tarefa = novatarefa();
             insereFila(fila , tarefa);
-            printf("\n\t\tteste2\n");
-            ///imprime(fila);
+            imprimeFila(fila);
             break;
         case 2:
         /* programa pergunta o código da tarefa que deseja altera; cria uma nova tarefa com o mesmo código 
@@ -221,6 +221,7 @@ void selecionaMenu(){
             scanf("%d", &codigo);
             tarefa = modificatarefa(codigo);
             trocatarefa( fila, codigo , tarefa);
+            imprimeFila(fila);
             break;
         case 3:
             /// printf("Concluir uma tarefa\n");
@@ -244,22 +245,10 @@ void selecionaMenu(){
             break;
         default:
             printf("Opcao invalida\n");
-            selecionaMenu();
+          // selecionaMenu();
             break;
     }
 }
-
-int main(){
-
-   
-    system("cls");
-    menu();
-
-    /// Recebe data atual
-    /*int dd, mm, aa;
-    recebeData(&dd, &mm, &aa);
-    printf("Data: %d/%d/%d\n", dd, mm, aa);*/
-    
 
 
     return 0;
