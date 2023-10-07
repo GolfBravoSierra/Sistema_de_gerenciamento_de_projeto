@@ -2,18 +2,12 @@
 #include <stdio.h>
 #include <time.h>
 
-//void selecionaMenu(); // protótipo da função
-void menu();
-
-/// Inicio do bloco para receber a data do sistema
+/// struct de data
 typedef struct Data{
     int dia;
     int mes;
     int ano;
 } Data;
-
-int recebeData(int *dia, int *mes, int *ano);
-/// Fim do bloco para receber data
 
 /// Estrutura da tarefa
  typedef struct Tarefa{
@@ -36,6 +30,26 @@ typedef struct Fila{
     No *ini;
     No *fim;
 } Fila;
+
+//struct de lista encadeada
+typedef struct Lista{
+    Tarefa tarefa;
+    struct Lista *prox;
+}lista;
+
+// protótipo da função menu
+void menu();
+
+// protótipo para função coclui tarefa
+Tarefa ConcluirTarefa(Fila *fila);
+
+// protótipo para função retira da fila
+Tarefa retiraFila(Fila *fila);
+
+//protótipo para receber a data do sistema
+int recebeData(int *dia, int *mes, int *ano);
+
+
 
 /// Função cria fila
 Fila *criaFila(){
@@ -177,13 +191,14 @@ int main(){
 
     int i = 0;
     Fila *fila = criaFila();
+    Tarefa tarefa;
+    int codigo;
+    
 while(i == 0){
     menu();
     int opcao = 0;
     scanf("%d", &opcao);
     system("cls");
-    Tarefa tarefa;
-    int codigo;
     switch(opcao){
         case 1:
         /// Cria uma nova tarefa e insere na fila
@@ -201,12 +216,12 @@ while(i == 0){
             scanf("%d", &codigo);
             tarefa = modificatarefa(codigo);
             trocatarefa( fila, codigo , tarefa);
+            codigo = 0;
             imprimeFila(fila);
             break;
         case 3:
-            /// printf("Concluir uma tarefa\n");
-            printf("imprime fila\n");
-            imprimeFila(fila);
+            printf("Concluir a primeira tarefa;\n");
+            ConcluirTarefa(fila);
             break;
         case 4:
             printf("Atualizacao do status da tarefa\n");
@@ -234,6 +249,28 @@ while(i == 0){
     return 0;
 }
 
+//função auxiliar para retirar tarefa da fila 
+No *ret_ini(No* ini){
+    No* p = ini->prox;
+    free(ini);
+    return p;
+}
+
+// função para concluir uma tarefa
+Tarefa ConcluirTarefa(Fila *fila){
+
+    //retirada da primeira Tkarefa da fila e colaca ela em um variavel auxiliar(tarefa)
+    Tarefa tarefa;
+    tarefa = fila->ini->tarefa;
+    fila->ini = ret_ini(fila->ini);
+    if(fila->ini==NULL)
+    fila->fim=NULL;
+    printf("Tarefa %d conclida com sucesso\n", tarefa.codigoTarefa);
+
+    return tarefa;
+}
+
+// função de imprimir menu
 void menu(){
     printf("1. Adicionar uma nova tarefa\n");
     printf("2. Modificar uma tarefa\n");
@@ -246,6 +283,7 @@ void menu(){
     
 }
 
+// função para receber a data do sistema
 int recebeData(int *dia, int *mes, int *ano){
     time_t mytime;
     mytime = time(NULL);
