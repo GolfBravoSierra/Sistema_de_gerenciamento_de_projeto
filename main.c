@@ -32,24 +32,41 @@ typedef struct Fila{
 } Fila;
 
 //struct de lista encadeada
-typedef struct Lista{
+typedef struct NoLista{
     Tarefa tarefa;
     struct Lista *prox;
-}lista;
+}Lista;
+//fução para inicializar lista encadeada
+Lista* inicializaLista(){
+    return NULL;
+}
 
 // protótipo da função menu
 void menu();
 
 // protótipo para função coclui tarefa
-Tarefa ConcluirTarefa(Fila *fila);
+Lista *ConcluirTarefa(Fila *fila, Lista *lista);
 
 // protótipo para função retira da fila
 Tarefa retiraFila(Fila *fila);
 
 //protótipo para receber a data do sistema
-int recebeData(int *dia, int *mes, int *ano);
+Data recebeData();
 
+// protótipo para função de imprimir tarefa
+void imprimeTarefa(Tarefa tarefa);
 
+// protótipo para função de imprimir fila
+void imprimeFila(Fila *fila);
+
+// protótipo para função de imprimir lista encadeada
+void imprimeLista(Lista* lista);
+
+// protótipo para função de verificar se a lista está vazia
+int vazia (Lista *recebida);
+
+// protótipo para função de inserir na lista encadeada
+Lista* insere (Lista* recebida, Tarefa valor);
 
 /// Função cria fila
 Fila *criaFila(){
@@ -104,7 +121,8 @@ Tarefa modificatarefa (int codigotarefa){
         }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
         printf("\nDigite o ano: ");
     scanf("%d", &tarefa.dataTermino.ano);
-    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("\nData de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    tarefa.status = -1;
     
     return tarefa;
 }
@@ -143,7 +161,8 @@ Tarefa novatarefa(){
         }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
         printf("\nDigite o ano: ");
     scanf("%d", &tarefa.dataTermino.ano);
-    printf("\nData de termino da tarefa: %d/%d/%d", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("\nData de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    tarefa.status = -1;
     return tarefa;
 };
 
@@ -193,6 +212,9 @@ int main(){
     Fila *fila = criaFila();
     Tarefa tarefa;
     int codigo;
+
+    Lista *lista;
+    lista = inicializaLista();
     
 while(i == 0){
     menu();
@@ -221,7 +243,9 @@ while(i == 0){
             break;
         case 3:
             printf("Concluir a primeira tarefa;\n");
-            ConcluirTarefa(fila);
+            lista = ConcluirTarefa(fila , lista);
+            printf("Lista de tarefas concluidas:\n");
+            imprimeLista(lista);
             break;
         case 4:
             printf("Atualizacao do status da tarefa\n");
@@ -257,17 +281,58 @@ No *ret_ini(No* ini){
 }
 
 // função para concluir uma tarefa
-Tarefa ConcluirTarefa(Fila *fila){
+Lista *ConcluirTarefa(Fila *fila, Lista *lista){
 
     //retirada da primeira Tkarefa da fila e colaca ela em um variavel auxiliar(tarefa)
     Tarefa tarefa;
+    int FlagDia = 0, FlagMes = 0, FlagAno = 0;
+    Data SistemData;
     tarefa = fila->ini->tarefa;
     fila->ini = ret_ini(fila->ini);
     if(fila->ini==NULL)
     fila->fim=NULL;
     printf("Tarefa %d conclida com sucesso\n", tarefa.codigoTarefa);
 
-    return tarefa;
+    SistemData = recebeData();
+
+    /// Dia
+    if(tarefa.dataTermino.dia < SistemData.dia){
+        FlagDia = 1;
+    }
+    else if(tarefa.dataTermino.dia == SistemData.dia){
+        FlagDia = 0;
+    }
+    /// Mes
+    if(tarefa.dataTermino.mes < SistemData.mes){
+        FlagMes = 1;
+    }
+    else if(tarefa.dataTermino.mes == SistemData.mes){
+        FlagMes = 0;
+    }
+    /// Ano
+    if(tarefa.dataTermino.ano < SistemData.ano){
+        FlagAno = 1;
+    }
+    else if(tarefa.dataTermino.ano == SistemData.ano){
+        FlagAno = 0;
+    }
+
+    if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
+        tarefa.status = 0;
+    }
+    else{
+        tarefa.status = 1;
+    }
+
+    tarefa.dataTermino = SistemData;
+
+
+    //função para inserir na lista encadeada
+    lista = insere (lista,tarefa);
+
+    imprimeTarefa(tarefa);
+
+    return  lista;
 }
 
 // função de imprimir menu
@@ -284,12 +349,65 @@ void menu(){
 }
 
 // função para receber a data do sistema
-int recebeData(int *dia, int *mes, int *ano){
+Data recebeData(){
+    Data SistemData;
     time_t mytime;
     mytime = time(NULL);
     struct tm tm = *localtime(&mytime);
-    *dia = tm.tm_mday;
-    *mes = tm.tm_mon + 1;
-    *ano = tm.tm_year + 1900;
+    SistemData.dia = tm.tm_mday;
+    SistemData.mes = tm.tm_mon + 1;
+    SistemData.ano = tm.tm_year + 1900;
+    return SistemData;
+}
+
+// função para imprimir tarefa
+void imprimeTarefa(Tarefa tarefa){
+    printf("Codigo da tarefa: %d\n", tarefa.codigoTarefa);
+    printf("Nome da tarefa: %s\n", tarefa.nomeTarefa);
+    printf("Nome do projeto: %s\n", tarefa.nomeProjeto);
+    printf("Data de inicio da tarefa: %2d/%2d/%2d\n", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
+    printf("Data de termino da tarefa: %2d/%2d/%2d\n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("Status da tarefa: %d\n", tarefa.status);
+    printf("\n");
+}
+
+// função para imprimir lista encadeada
+void imprimeLista(Lista* lista) 
+{
+    if(vazia(lista))
+    {
+        printf("\n\n\t\t => LISTA VAZIA  <==\n\n ");
+    }
+    else
+    {
+        for (; lista != NULL; lista = lista->prox) {
+            imprimeTarefa(lista->tarefa);
+        }
+        printf("\n\n");
+    }
+
+}
+
+// função para verificar se a lista está vazia
+int vazia (Lista *recebida)
+{
+	if (recebida == NULL)
+	{
+		return 1;
+
+	}
     return 0;
+}
+
+// função para inserir na lista encadeada
+Lista* insere (Lista* recebida, Tarefa valor)
+{
+    Lista* novo = (Lista*) malloc(sizeof(Lista));
+    if (novo == NULL) {
+        // tratamento de erro
+        return recebida;
+    }
+    novo->tarefa = valor;
+    novo->prox = recebida;
+    return novo;;
 }
