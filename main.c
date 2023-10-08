@@ -301,7 +301,9 @@ while(i == 0){
                 //Tarefa tarefaaux;
                 //tarefaaux = RetiraPendencia(listaPendente, CodRet);
                 //insereFila(fila, tarefaaux);
+                break;
             case 4:
+                system("cls");
                 break;
             default:
                 break;
@@ -317,6 +319,7 @@ while(i == 0){
             break;
         case 7:
             printf("Listar tarefas concluidas com e sem atraso\n");
+            return 0; /// Sair do programa provisorio
             break;
         case 8:
             printf("Sair do programa (imprime fila provisorio)\n");
