@@ -74,6 +74,12 @@ void AtualizaStatus(Fila *fila);
 // protótipo para função que seta pendencia
 Lista* SetaPendencia(Fila *fila, int codigotarefa, Lista *lista);
 
+// protótipo para função que retira pendencia
+Lista* RetiraPendencia(Lista *lista, int codigotarefa , Fila *fila);
+
+// protótipo para função imprimir lista com e sem atraso
+void ImprimiListaComESemAtraso(Lista *lista);
+
 /// Função cria fila
 Fila *criaFila(){
     Fila *fila = (Fila*) malloc(sizeof(Fila));
@@ -140,7 +146,7 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
         printf("\nDigite o ano: ");
     scanf("%d", &tarefa.dataTermino.ano);
     printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
-    tarefa.status = -1;
+    tarefa.status = 0;
     
     return tarefa;
 }
@@ -180,7 +186,7 @@ Tarefa novatarefa(){
         printf("\nDigite o ano: ");
     scanf("%d", &tarefa.dataTermino.ano);
     printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
-    tarefa.status = -1;
+    tarefa.status = 0;
     return tarefa;
 };
 
@@ -258,7 +264,7 @@ while(i == 0){
             tarefa = novatarefa();
             insereFila(fila , tarefa);
             system("cls");
-            printf("listas com a nova tarefa:\n");
+            printf("LISTA COM A NOVA TAREFA:\n");
             imprimeFila(fila);
             break;
         case 2:
@@ -272,11 +278,12 @@ while(i == 0){
             trocatarefa( fila, codigo , tarefa);
             codigo = 0;
             system("cls");
-            printf("listas com a tarefa modificada:\n");
+            printf("LISTA COM A TAREFA MODIFICADA:\n");
             imprimeFila(fila);
             break;
         case 3:
-            printf("Concluir a primeira tarefa;\n");
+            system("cls");
+            printf("PRIMEIRA TAREFA CONCLUIDA;\n");
             lista = ConcluirTarefa(fila , lista);
             break;
         case 4:
@@ -287,20 +294,21 @@ while(i == 0){
             {
             case 1:
                 AtualizaStatus(fila);
-                printf("Status atualizado com sucesso\n");
+                system("cls");
+                printf("STATUS DA FILA ATUALIZADO COM SUCESSO\n");
                 break;
             case 2:
                 printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
                 scanf("%d", &CodMod);
+                system("cls");
                 printf("comfirmacao do codigo: %d\n", CodMod);
                 listaPendente = SetaPendencia(fila, CodMod, listaPendente);
                 break;
             case 3:
-                printf("Digite o codigo da tarefa que deseja recolocar na fila: ");
+                printf("Digite o codigo da tarefa que deseja retirar pendencia na fila: ");
                 scanf("%d", &CodRet);
-                //Tarefa tarefaaux;
-                //tarefaaux = RetiraPendencia(listaPendente, CodRet);
-                //insereFila(fila, tarefaaux);
+                system("cls");
+                listaPendente =  RetiraPendencia(listaPendente, CodRet, fila);
                 break;
             case 4:
                 system("cls");
@@ -310,20 +318,28 @@ while(i == 0){
             }
             break;
         case 5:
-            printf("Listar tarefas pendentes\n");
+            system("cls");
+            printf("LISTA DE TAREFAS PENDENTES:\n");
             imprimeLista(listaPendente);
             break;
         case 6:
-            printf("Listar tarefas concluidas\n");
+            system("cls");
+            printf("LISTA DE TAREFAS COCLUIDAS:\n");
             imprimeLista(lista);
             break;
         case 7:
-            printf("Listar tarefas concluidas com e sem atraso\n");
-            return 0; /// Sair do programa provisorio
+            system("cls");
+            ImprimiListaComESemAtraso(lista);
             break;
         case 8:
-            printf("Sair do programa (imprime fila provisorio)\n");
+            system("cls");
+            printf("FILA DE TAREFAS:\n");
             imprimeFila(fila);
+            break;
+        case 9:
+            system("cls");
+            printf("Ate mais!\n");
+            return 0;
             break;
         default:
             printf("Opcao invalida\n");
@@ -410,8 +426,8 @@ void menu(){
     printf("5. Listar tarefas pendentes\n");
     printf("6. Listar tarefas concluidas\n");
     printf("7. Listar tarefas concluidas com e sem atraso\n");
-    printf("8. Sair do programa(imprime fila provisorio)\n");
-    
+    printf("8. Impirimir fila de tarefas\n");
+    printf("9. Sair do programa\n");
 }
 
 // função para receber a data do sistema
@@ -537,4 +553,74 @@ Lista* SetaPendencia(Fila *fila, int codigotarefa, Lista *listaPendente){
     fila-> ini = filaaux -> ini;
     fila-> fim = filaaux -> fim;
     return listaPendente;
+}
+
+// função para retirar pendencia
+Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila){
+    Tarefa tarefaaux1 , tarefaaux2;
+    Lista *listaaux = inicializaLista();
+    Lista *aux = lista;
+    while(aux != NULL){
+        if(aux->tarefa.codigoTarefa == codigotarefa){
+            tarefaaux1 = aux -> tarefa;
+            
+            //arruamdno status da tarefa para retornar ela para fila de tarefas
+            Data dataSistem = recebeData();
+            int FlagDia = 0, FlagMes = 0, FlagAno = 0;
+            if(tarefaaux1.dataTermino.dia < dataSistem.dia){
+                FlagDia = 1; 
+            }
+            else if(tarefaaux1.dataTermino.dia == dataSistem.dia){
+                FlagDia = 0;
+            }
+            if(tarefaaux1.dataTermino.mes < dataSistem.mes){
+                FlagMes = 1;
+            }
+            else if(tarefaaux1.dataTermino.mes == dataSistem.mes){
+                FlagMes = 0;
+            }
+            if(tarefaaux1.dataTermino.ano < dataSistem.ano){
+                FlagAno = 1;
+            }
+            else if(tarefaaux1.dataTermino.ano == dataSistem.ano){
+                FlagAno = 0;
+            }
+            if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
+                tarefaaux1.status = 0;
+            }
+            else{
+                tarefaaux1.status = 1;
+            }
+
+            printf("tarefa retirada da lista de pendentes\n");
+            imprimeTarefa(tarefaaux1);
+            insereFila (fila, tarefaaux1);
+        }
+        else{
+            tarefaaux2 = aux -> tarefa;
+            listaaux = insere(listaaux, tarefaaux2);
+        }
+        aux = aux->prox;
+    }
+    return listaaux;
+}
+
+// função para imprimir lista com e sem atraso
+void ImprimiListaComESemAtraso(Lista *lista){
+    Lista *listaux1 = lista;
+    Lista *listaux2 = lista;
+    printf("->TAREFAS CONCLUIDAS SEM ATRASO:\n");
+    while(listaux1 != NULL){
+        if(listaux1->tarefa.status == 0){
+            imprimeTarefa(listaux1->tarefa);
+        }
+        listaux1 = listaux1->prox;
+    }
+    printf("->TAREFAS CONCLUIDAS COM ATRASO:\n");
+    while(listaux2 != NULL){
+        if(listaux2->tarefa.status == 1){
+            imprimeTarefa(listaux2->tarefa);
+        }
+        listaux2 = listaux2->prox;
+    }
 }
