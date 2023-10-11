@@ -47,9 +47,6 @@ void menu();
 // protótipo para função coclui tarefa
 Lista *ConcluirTarefa(Fila *fila, Lista *lista);
 
-// protótipo para função retira da fila
-Tarefa retiraFila(Fila *fila);
-
 //protótipo para receber a data do sistema
 Data recebeData();
 
@@ -79,6 +76,9 @@ Lista* RetiraPendencia(Lista *lista, int codigotarefa , Fila *fila);
 
 // protótipo para função imprimir lista com e sem atraso
 void ImprimiListaComESemAtraso(Lista *lista);
+
+// protótipo para função que verifica se o codigo da tarefa ja existe
+int verificacodigo(Fila *fila, int codigotarefa);
 
 /// Função cria fila
 Fila *criaFila(){
@@ -152,10 +152,23 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
 }
 
 //função para criar uma nova tarefa
-Tarefa novatarefa(){
+Tarefa novatarefa(Fila *fila){
     Tarefa tarefa;
-    printf("\nDigite o codigo da tarefa: ");
-    scanf("%d", &tarefa.codigoTarefa);
+    int flag = 0;
+    //verifica se o codigo da tarefa ja existe
+    while (flag == 0)
+    {
+       
+        printf("\nDigite o codigo da tarefa: ");
+        scanf("%d", &tarefa.codigoTarefa);
+        while(verificacodigo(fila,tarefa.codigoTarefa)==1)
+        {
+            printf("\nCodigo ja existente, digite outro codigo\nPor favor insira um novo codigo:\n");
+            scanf("%d", &tarefa.codigoTarefa);
+            flag = 0;
+        }
+        flag = 1;
+    }
     while (getchar() != '\n');
     printf("\nDigite o nome da tarefa: ");
     gets(tarefa.nomeTarefa);
@@ -261,10 +274,11 @@ while(i == 0){
         case 1:
         /// Cria uma nova tarefa e insere na fila
             printf("\nAdicionar uma nova tarefa\n");
-            tarefa = novatarefa();
+            tarefa = novatarefa(fila);
             insereFila(fila , tarefa);
             system("cls");
             printf("LISTA COM A NOVA TAREFA:\n");
+            AtualizaStatus(fila);
             imprimeFila(fila);
             break;
         case 2:
@@ -279,6 +293,7 @@ while(i == 0){
             codigo = 0;
             system("cls");
             printf("LISTA COM A TAREFA MODIFICADA:\n");
+            AtualizaStatus(fila);
             imprimeFila(fila);
             break;
         case 3:
@@ -297,14 +312,19 @@ while(i == 0){
                 system("cls");
                 printf("STATUS DA FILA ATUALIZADO COM SUCESSO\n");
                 break;
-            case 2:
+            case 2: 
+                system("cls");
+                printf("FILA DE TAREFAS:\n");
+                imprimeFila(fila);
                 printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
                 scanf("%d", &CodMod);
                 system("cls");
-                printf("comfirmacao do codigo: %d\n", CodMod);
                 listaPendente = SetaPendencia(fila, CodMod, listaPendente);
                 break;
             case 3:
+                system("cls");
+                printf("LISTA DE TAREFAS PENDENTES:\n");
+                imprimeLista(listaPendente);
                 printf("Digite o codigo da tarefa que deseja retirar pendencia na fila: ");
                 scanf("%d", &CodRet);
                 system("cls");
@@ -346,6 +366,7 @@ while(i == 0){
           // selecionaMenu();
             break;
     }
+    AtualizaStatus(fila);
 }
 
 
@@ -623,4 +644,16 @@ void ImprimiListaComESemAtraso(Lista *lista){
         }
         listaux2 = listaux2->prox;
     }
+}
+
+// função para verificar se o codigo da tarefa ja existe
+int verificacodigo(Fila *fila, int codigotarefa){
+    No *aux = fila->ini;
+    while(aux != NULL){
+        if(aux->tarefa.codigoTarefa == codigotarefa){
+            return 1;
+        }
+        aux = aux->prox;
+    }
+    return 0;
 }
