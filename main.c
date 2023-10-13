@@ -17,6 +17,7 @@ typedef struct Data{
     Data dataInicio;
     Data dataTermino;
     int status;
+    int prioridade;
 } Tarefa;
 
 /// Estrutura No da fila 
@@ -104,6 +105,8 @@ No* ins_fim(No* fim, Tarefa A){
 Tarefa modificatarefa (int codigotarefa, Fila *fila){
     Tarefa tarefa;
 
+    Data dataatual = recebeData();
+
     //imprimiando a tarefa que o usuario deseja mudar
     printf("\nDados da Tarefa Escolhida:\n");
     No *aux = fila->ini;
@@ -120,6 +123,15 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
     gets(tarefa.nomeTarefa);
     printf("\nDigite o nome do projeto: ");
     gets(tarefa.nomeProjeto);
+
+    printf("Qual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
+    scanf("%d", &tarefa.prioridade);
+    while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
+    {
+        printf("Prioridade invalida, digite novamente\n");
+        scanf("%d", &tarefa.prioridade);
+    }
+    
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
@@ -129,10 +141,12 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
         printf("\nDigite o mes: ");
         scanf("%d", &tarefa.dataInicio.mes);
         }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
+    do{
         printf("\nDigite o ano: ");
         scanf("%d", &tarefa.dataInicio.ano);
+    }while(tarefa.dataInicio.ano < dataatual.ano);
     printf("ignore a data errada abaixo... no final ela fica certa >;D ");
-    printf("\nComfirmacao da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.ano, tarefa.dataInicio.ano, tarefa.dataInicio.ano);
+    printf("\nComfirmacao da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
     printf("\ndigite a data de termino: (dia/mes/ano)\n");
     do{
@@ -143,8 +157,10 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
         printf("\nDigite o mes: ");
         scanf("%d", &tarefa.dataTermino.mes);
         }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
+    do{
         printf("\nDigite o ano: ");
-    scanf("%d", &tarefa.dataTermino.ano);
+        scanf("%d", &tarefa.dataTermino.ano);
+        }while(tarefa.dataTermino.ano < tarefa.dataInicio.ano || tarefa.dataTermino.ano < dataatual.ano);
     printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     tarefa.status = 0;
     
@@ -155,6 +171,9 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
 Tarefa novatarefa(Fila *fila){
     Tarefa tarefa;
     int flag = 0;
+
+    Data dataatual = recebeData();
+
     //verifica se o codigo da tarefa ja existe
     while (flag == 0)
     {
@@ -170,10 +189,24 @@ Tarefa novatarefa(Fila *fila){
         flag = 1;
     }
     while (getchar() != '\n');
+
     printf("\nDigite o nome da tarefa: ");
     gets(tarefa.nomeTarefa);
+
     printf("\nDigite o nome do projeto: ");
     gets(tarefa.nomeProjeto);
+
+    /// Recebe a prioridade da tarefa, caso usuario digite errado uma nova tentativa é feita
+    
+    printf("Qual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
+    scanf("%d", &tarefa.prioridade);
+    while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
+    {
+        printf("Prioridade invalida, digite novamente\n");
+        scanf("%d", &tarefa.prioridade);
+    }
+    
+
     printf("\ndigite a data de inicio: (dia/mes/ano):\n");
     do{
         printf("\nDigite o dia: ");
@@ -183,8 +216,10 @@ Tarefa novatarefa(Fila *fila){
         printf("\nDigite o mes: ");
         scanf("%d", &tarefa.dataInicio.mes);
         }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
+    do{
         printf("\nDigite o ano: ");
         scanf("%d", &tarefa.dataInicio.ano);
+    }while(tarefa.dataInicio.ano < dataatual.ano);
     printf("\nComfirmacoa da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
     printf("\ndigite a data de termino: (dia/mes/ano)\n");
@@ -196,11 +231,15 @@ Tarefa novatarefa(Fila *fila){
         printf("\nDigite o mes: ");
         scanf("%d", &tarefa.dataTermino.mes);
         }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
+    do{
         printf("\nDigite o ano: ");
-    scanf("%d", &tarefa.dataTermino.ano);
+        scanf("%d", &tarefa.dataTermino.ano);
+        }while(tarefa.dataTermino.ano < tarefa.dataInicio.ano || tarefa.dataTermino.ano < dataatual.ano);
     printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     tarefa.status = 0;
     return tarefa;
+
+    
 };
 
 //função para inserina uma tarefa na fila
@@ -235,6 +274,7 @@ void imprimeFila(Fila *fila){
         printf("Codigo da tarefa: %d\n", aux->tarefa.codigoTarefa);
         printf("Nome da tarefa: %s\n", aux->tarefa.nomeTarefa);
         printf("Nome do projeto: %s\n", aux->tarefa.nomeProjeto);
+        printf("Prioridade da tarefa: %d\n", aux->tarefa.prioridade);
         printf("Data de inicio da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataInicio.dia, aux->tarefa.dataInicio.mes, aux->tarefa.dataInicio.ano);
         printf("Data de termino da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataTermino.dia, aux->tarefa.dataTermino.mes, aux->tarefa.dataTermino.ano);
         printf("Status da tarefa: %d\n", aux->tarefa.status);
@@ -278,7 +318,7 @@ while(i == 0){
             insereFila(fila , tarefa);
             system("cls");
             printf("LISTA COM A NOVA TAREFA:\n");
-            AtualizaStatus(fila);
+           
             imprimeFila(fila);
             break;
         case 2:
@@ -299,6 +339,7 @@ while(i == 0){
         case 3:
             system("cls");
             printf("PRIMEIRA TAREFA CONCLUIDA;\n");
+            AtualizaStatus(fila);
             lista = ConcluirTarefa(fila , lista);
             break;
         case 4:
@@ -385,7 +426,6 @@ Lista *ConcluirTarefa(Fila *fila, Lista *lista){
 
     //retirada da primeira Tarefa da fila e colaca ela em um variavel auxiliar(tarefa)
     Tarefa tarefa;
-    int FlagDia = 0, FlagMes = 0, FlagAno = 0;
     Data SistemData;
     tarefa = fila->ini->tarefa;
     fila->ini = ret_ini(fila->ini);
@@ -393,38 +433,7 @@ Lista *ConcluirTarefa(Fila *fila, Lista *lista){
     fila->fim=NULL;
     printf("Tarefa %d conclida com sucesso\n", tarefa.codigoTarefa);
 
-    //verifica se a tarefa foi concluida no dia certo ou se foi concluida com atraso
-    //para definir o status da tarefa
     SistemData = recebeData();
-
-    /// Dia
-    if(tarefa.dataTermino.dia < SistemData.dia){
-        FlagDia = 1;
-    }
-    else if(tarefa.dataTermino.dia == SistemData.dia){
-        FlagDia = 0;
-    }
-    /// Mes
-    if(tarefa.dataTermino.mes < SistemData.mes){
-        FlagMes = 1;
-    }
-    else if(tarefa.dataTermino.mes == SistemData.mes){
-        FlagMes = 0;
-    }
-    /// Ano
-    if(tarefa.dataTermino.ano < SistemData.ano){
-        FlagAno = 1;
-    }
-    else if(tarefa.dataTermino.ano == SistemData.ano){
-        FlagAno = 0;
-    }
-
-    if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
-        tarefa.status = 0;
-    }
-    else{
-        tarefa.status = 1;
-    }
 
     tarefa.dataTermino = SistemData;
 
@@ -468,6 +477,7 @@ void imprimeTarefa(Tarefa tarefa){
     printf("Codigo da tarefa: %d\n", tarefa.codigoTarefa);
     printf("Nome da tarefa: %s\n", tarefa.nomeTarefa);
     printf("Nome do projeto: %s\n", tarefa.nomeProjeto);
+    printf("Prioridade da tarefa: %d\n", tarefa.prioridade);
     printf("Data de inicio da tarefa: %2d/%2d/%2d\n", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     printf("Data de termino da tarefa: %2d/%2d/%2d\n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     printf("Status da tarefa: %d\n", tarefa.status);
@@ -519,37 +529,66 @@ Lista* insere (Lista* recebida, Tarefa valor)
 void AtualizaStatus(Fila *fila){
     No *aux = fila->ini;
     Data dataSistem = recebeData();
-    int FlagDia = 0, FlagMes = 0, FlagAno = 0;  
-    while(aux != NULL){
-        FlagDia = 0;
-        FlagMes = 0;
-        FlagAno = 0;
-        if(aux->tarefa.dataTermino.dia < dataSistem.dia){
-            FlagDia = 1; 
-        }
-        else if(aux->tarefa.dataTermino.dia == dataSistem.dia){
-            FlagDia = 0;
-        }
-        if(aux->tarefa.dataTermino.mes < dataSistem.mes){
-            FlagMes = 1;
-        }
-        else if(aux->tarefa.dataTermino.mes == dataSistem.mes){
-            FlagMes = 0;
-        }
-        if(aux->tarefa.dataTermino.ano < dataSistem.ano){
-            FlagAno = 1;
+    int FlagMes = 0, FlagAno = 0;  
+
+    while (aux != NULL)
+    {
+    FlagMes = 0;
+    FlagAno = 0;
+        if (aux->tarefa.dataTermino.ano > dataSistem.ano){
+            FlagAno = 1; 
         }
         else if(aux->tarefa.dataTermino.ano == dataSistem.ano){
-            FlagAno = 0;
+            FlagAno = 2;
         }
-        if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
+        else if(aux->tarefa.dataTermino.ano < dataSistem.ano){
+            FlagAno = 3;
+        }
+
+        switch(FlagAno)
+        {
+        case(1):
             aux->tarefa.status = 0;
-        }
-        else{
+        break;
+        case(2):
+            if (aux->tarefa.dataTermino.mes > dataSistem.mes){
+                FlagMes = 1;
+            }
+            else if(aux->tarefa.dataTermino.mes == dataSistem.mes){
+                FlagMes = 2;
+            }
+            else if(aux->tarefa.dataTermino.mes < dataSistem.mes){
+                FlagMes = 3;
+            }
+            switch(FlagMes)
+            {
+            case(1):
+                aux->tarefa.status = 0;
+            break;
+            case(2):
+                if(aux->tarefa.dataTermino.dia > dataSistem.mes)
+                {
+                    aux->tarefa.status = 1;
+                }
+                else
+                {
+                    aux->tarefa.status = 0;
+                }
+            break;
+            case(3):
+                aux->tarefa.status = 1;
+            break;
+            }
+            break;
+        case(3):
             aux->tarefa.status = 1;
+        break;
+        default:
+        break;
         }
         aux = aux->prox;
     }
+
 }
 
 // função para setar pendencia
@@ -588,29 +627,29 @@ Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila){
             //arruamdno status da tarefa para retornar ela para fila de tarefas
             Data dataSistem = recebeData();
             int FlagDia = 0, FlagMes = 0, FlagAno = 0;
-            if(tarefaaux1.dataTermino.dia < dataSistem.dia){
-                FlagDia = 1; 
-            }
-            else if(tarefaaux1.dataTermino.dia == dataSistem.dia){
-                FlagDia = 0;
-            }
-            if(tarefaaux1.dataTermino.mes < dataSistem.mes){
-                FlagMes = 1;
-            }
-            else if(tarefaaux1.dataTermino.mes == dataSistem.mes){
-                FlagMes = 0;
-            }
-            if(tarefaaux1.dataTermino.ano < dataSistem.ano){
-                FlagAno = 1;
-            }
-            else if(tarefaaux1.dataTermino.ano == dataSistem.ano){
-                FlagAno = 0;
-            }
-            if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
-                tarefaaux1.status = 0;
+            if(tarefaaux1.dataTermino.dia > dataSistem.dia){
+                FlagDia = 0; 
             }
             else{
+                FlagDia = 1;
+            }
+            if(tarefaaux1.dataTermino.mes > dataSistem.mes){
+                FlagMes = 0;
+            }
+            else{
+                FlagMes = 1;
+            }
+            if(tarefaaux1.dataTermino.ano > dataSistem.ano ){
+                FlagAno = 0;
+            }
+            else{
+                FlagAno = 1;
+            }
+            if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
                 tarefaaux1.status = 1;
+            }
+            else{
+                tarefaaux1.status = 0;
             }
 
             printf("tarefa retirada da lista de pendentes\n");
