@@ -344,7 +344,7 @@ while(i == 0){
             break;
         case 4:
             printf("Atualizacao do status da tarefa\n");
-            printf("Oque deseja fazer?\n1 -> Atualizar status de todas as tarefas: \n2 -> Colocar terafa como pendente: \n3 -> Retirar pendenci:\n4 -> Retornar ao menu:\n");
+            printf("O que deseja fazer?\n1 -> Atualizar status de todas as tarefas: \n2 -> Colocar terafa como pendente: \n3 -> Retirar pendencia:\n4 -> Retornar ao menu:\n");
             scanf("%d", &resposta);
             switch (resposta)
             {
