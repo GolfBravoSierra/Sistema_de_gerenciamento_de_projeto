@@ -287,6 +287,9 @@ int main(){
 
     int i = 0;
     Fila *fila = criaFila();
+    Fila *filaPrioridade1 = criaFila();
+    Fila *filaPrioridade2 = criaFila();
+    Fila *filaPrioridade3 = criaFila();
     Tarefa tarefa;
     int codigo;
 
@@ -310,11 +313,30 @@ while(i == 0){
     int opcao = 0;
     scanf("%d", &opcao);
     system("cls");
+    Tarefa tarefaaux;
     switch(opcao){
         case 1:
         /// Cria uma nova tarefa e insere na fila
             printf("\nAdicionar uma nova tarefa\n");
             tarefa = novatarefa(fila);
+            /*
+            aux = fila->ini;
+            while(aux != NULL){
+                tarefaaux = aux->tarefa;
+                switch (tarefa.prioridade)
+                {
+                case 1:
+                    insereFila(filaPrioridade1 , tarefa);
+                    break;
+                case 2:
+                    insereFila(filaPrioridade2 , tarefa);
+                    break;
+                case 3:
+                    insereFila(filaPrioridade3 , tarefa);
+                    break;
+                {
+            }
+            */
             insereFila(fila , tarefa);
             system("cls");
             printf("LISTA COM A NOVA TAREFA:\n");
@@ -370,6 +392,7 @@ while(i == 0){
                 scanf("%d", &CodRet);
                 system("cls");
                 listaPendente =  RetiraPendencia(listaPendente, CodRet, fila);
+                AtualizaStatus(fila);
                 break;
             case 4:
                 system("cls");
@@ -624,34 +647,6 @@ Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila){
         if(aux->tarefa.codigoTarefa == codigotarefa){
             tarefaaux1 = aux -> tarefa;
             
-            //arruamdno status da tarefa para retornar ela para fila de tarefas
-            Data dataSistem = recebeData();
-            int FlagDia = 0, FlagMes = 0, FlagAno = 0;
-            if(tarefaaux1.dataTermino.dia > dataSistem.dia){
-                FlagDia = 0; 
-            }
-            else{
-                FlagDia = 1;
-            }
-            if(tarefaaux1.dataTermino.mes > dataSistem.mes){
-                FlagMes = 0;
-            }
-            else{
-                FlagMes = 1;
-            }
-            if(tarefaaux1.dataTermino.ano > dataSistem.ano ){
-                FlagAno = 0;
-            }
-            else{
-                FlagAno = 1;
-            }
-            if(FlagDia == 0 && FlagMes == 0 && FlagAno == 0){
-                tarefaaux1.status = 1;
-            }
-            else{
-                tarefaaux1.status = 0;
-            }
-
             printf("tarefa retirada da lista de pendentes\n");
             imprimeTarefa(tarefaaux1);
             insereFila (fila, tarefaaux1);
