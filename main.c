@@ -73,13 +73,16 @@ void AtualizaStatus(Fila *fila);
 Lista* SetaPendencia(Fila *fila, int codigotarefa, Lista *lista);
 
 // protótipo para função que retira pendencia
-Lista* RetiraPendencia(Lista *lista, int codigotarefa , Fila *fila);
+Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila1 , Fila *fila2 , Fila *fila3);
 
 // protótipo para função imprimir lista com e sem atraso
 void ImprimiListaComESemAtraso(Lista *lista);
 
 // protótipo para função que verifica se o codigo da tarefa ja existe
 int verificacodigo(Fila *fila, int codigotarefa);
+
+// protótipo para função que retira tarefa da fila
+void retiraFila(Fila *fila, int codigotarefa);
 
 /// Função cria fila
 Fila *criaFila(){
@@ -124,7 +127,7 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
     printf("\nDigite o nome do projeto: ");
     gets(tarefa.nomeProjeto);
 
-    printf("Qual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
+    printf("\nQual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
     scanf("%d", &tarefa.prioridade);
     while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
     {
@@ -145,7 +148,6 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
         printf("\nDigite o ano: ");
         scanf("%d", &tarefa.dataInicio.ano);
     }while(tarefa.dataInicio.ano < dataatual.ano);
-    printf("ignore a data errada abaixo... no final ela fica certa >;D ");
     printf("\nComfirmacao da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
     printf("\ndigite a data de termino: (dia/mes/ano)\n");
@@ -198,7 +200,7 @@ Tarefa novatarefa(Fila *fila){
 
     /// Recebe a prioridade da tarefa, caso usuario digite errado uma nova tentativa é feita
     
-    printf("Qual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
+    printf("\nQual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
     scanf("%d", &tarefa.prioridade);
     while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
     {
@@ -313,57 +315,177 @@ while(i == 0){
     int opcao = 0;
     scanf("%d", &opcao);
     system("cls");
-    Tarefa tarefaaux;
+    int prioridade = 0;
     switch(opcao){
         case 1:
         /// Cria uma nova tarefa e insere na fila
             printf("\nAdicionar uma nova tarefa\n");
+
             tarefa = novatarefa(fila);
-            /*
-            aux = fila->ini;
-            while(aux != NULL){
-                tarefaaux = aux->tarefa;
+            insereFila(fila , tarefa);
+
                 switch (tarefa.prioridade)
                 {
                 case 1:
                     insereFila(filaPrioridade1 , tarefa);
+                    system("cls");
+                    printf("FILA PRIORIDADE 1 COM A NOVA TAREFA:\n");
+                    AtualizaStatus(filaPrioridade1);
+                    imprimeFila(filaPrioridade1);
                     break;
                 case 2:
                     insereFila(filaPrioridade2 , tarefa);
+                    system("cls");
+                    printf("FILA PRIORIDADE 2 COM A NOVA TAREFA:\n");
+                    AtualizaStatus(filaPrioridade2);
+                    imprimeFila(filaPrioridade2);
                     break;
                 case 3:
                     insereFila(filaPrioridade3 , tarefa);
+                    system("cls");
+                    printf("FILA PRIORIDADE 3 COM A NOVA TAREFA:\n");
+                    AtualizaStatus(filaPrioridade3);
+                    imprimeFila(filaPrioridade3);
                     break;
-                {
             }
-            */
-            insereFila(fila , tarefa);
-            system("cls");
-            printf("LISTA COM A NOVA TAREFA:\n");
-           
-            imprimeFila(fila);
-            break;
+        break;
+            
         case 2:
-        /* programa pergunta o código da tarefa que deseja altera; cria uma nova tarefa com o mesmo código 
-        porem dando ao usuario a oportunidade de trocar todos os dados da tarefa; depois o programa chama uma 
-        função a qual pega a nova tarefa criada e seu código com isso ela procura na fila o código e caso ache 
-        ele coloca a nova tarefa na posição da com o mesmo código */
-            printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
-            scanf("%d", &codigo);
-            tarefa = modificatarefa(codigo , fila);
-            trocatarefa( fila, codigo , tarefa);
-            codigo = 0;
-            system("cls");
-            printf("LISTA COM A TAREFA MODIFICADA:\n");
-            AtualizaStatus(fila);
-            imprimeFila(fila);
-            break;
+
+            
+            printf("\nQual a prioridade da tarefa que desaja alterar(1 ou 2 ou 3): ");
+            scanf("%d", &prioridade);
+
+            switch(prioridade){
+                case 1:
+                    system("cls");
+                    printf("FILA PRIORIDADE 1:\n");
+                    imprimeFila(filaPrioridade1);
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    scanf("%d", &codigo);
+                    system("cls");
+                    tarefa = modificatarefa(codigo , filaPrioridade1);
+
+                    switch (tarefa.prioridade)
+                    {
+                    case 1:
+                        trocatarefa( filaPrioridade1, codigo , tarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 1 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade1);
+                        break;
+                    case 2:
+                        insereFila(filaPrioridade2 , tarefa);
+                        retiraFila(filaPrioridade1 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 2 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade2);
+                        break;
+                    case 3:
+                        insereFila(filaPrioridade3 , tarefa);
+                        retiraFila(filaPrioridade1 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 3 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade3);
+                        break;
+                    }
+                    break;
+                case 2:
+                    system("cls");
+                    printf("FILA PRIORIDADE 2:\n");
+                    imprimeFila(filaPrioridade2);
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    scanf("%d", &codigo);
+                    system("cls");
+                    tarefa = modificatarefa(codigo , filaPrioridade2);
+                    switch (tarefa.prioridade)
+                    {
+                    case 1:
+                        insereFila(filaPrioridade1 , tarefa);
+                        retiraFila(filaPrioridade2 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 1 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade1);
+                        break;
+                    case 2:
+                        trocatarefa( filaPrioridade2, codigo , tarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 2 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade2);
+                        break;
+                    case 3:
+                        insereFila(filaPrioridade3 , tarefa);
+                        retiraFila(filaPrioridade2 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 3 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade3);
+                        break;
+                    }
+                    break;
+                case 3:
+                    system("cls");
+                    printf("FILA PRIORIDADE 3 COM A NOVA TAREFA:\n");
+                    imprimeFila(filaPrioridade3);
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    scanf("%d", &codigo);
+                    system("cls");
+                    tarefa = modificatarefa(codigo , filaPrioridade3);
+                    switch (tarefa.prioridade)
+                    {
+                    case 1:
+                        insereFila(filaPrioridade1 , tarefa);
+                        retiraFila(filaPrioridade3 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 1 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade1);
+                        break;
+                    case 2:
+                        insereFila(filaPrioridade2 , tarefa);
+                        retiraFila(filaPrioridade3 , tarefa.codigoTarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 2 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade2);
+                        break;
+                    case 3:
+                        trocatarefa( filaPrioridade3, codigo , tarefa);
+                        system("cls");
+                        printf("FILA PRIORIDADE 3 COM A TAREFA MODIFICADA:\n");
+                        imprimeFila(filaPrioridade3);
+                        break;
+                    }
+                    break;
+                default:
+                    printf("Opcao invalida\n");
+            }
+
+            prioridade = 0;
+            
+        break;
+
+
         case 3:
             system("cls");
-            printf("PRIMEIRA TAREFA CONCLUIDA;\n");
-            AtualizaStatus(fila);
-            lista = ConcluirTarefa(fila , lista);
-            break;
+            printf("Digite de qual fial desaja finalizar uma tarefa(1 ou 2 ou 3):\n");
+            scanf("%d", &prioridade);
+ 
+            switch(prioridade){
+                case 1:
+                    AtualizaStatus(filaPrioridade1);
+                    lista = ConcluirTarefa(filaPrioridade1 , lista);
+                break;
+                case 2:
+                    AtualizaStatus(filaPrioridade2);
+                    lista = ConcluirTarefa(filaPrioridade2 , lista);
+                    break;
+                case 3:
+                    AtualizaStatus(filaPrioridade3);
+                    lista = ConcluirTarefa(filaPrioridade3 , lista);
+                default:
+                    printf("Opcao invalida\n");
+            }
+            prioridade = 0;
+        break;
+
         case 4:
             printf("Atualizacao do status da tarefa\n");
             printf("O que deseja fazer?\n1 -> Atualizar status de todas as tarefas: \n2 -> Colocar terafa como pendente: \n3 -> Retirar pendencia:\n4 -> Retornar ao menu:\n");
@@ -372,18 +494,51 @@ while(i == 0){
             {
             case 1:
                 AtualizaStatus(fila);
+                AtualizaStatus(filaPrioridade1);
+                AtualizaStatus(filaPrioridade2);
+                AtualizaStatus(filaPrioridade3);
                 system("cls");
                 printf("STATUS DA FILA ATUALIZADO COM SUCESSO\n");
-                break;
+            break;
             case 2: 
                 system("cls");
-                printf("FILA DE TAREFAS:\n");
-                imprimeFila(fila);
-                printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
-                scanf("%d", &CodMod);
-                system("cls");
-                listaPendente = SetaPendencia(fila, CodMod, listaPendente);
-                break;
+
+                printf("\nEm qual fila de voce deseja setar um tarefa como pendente?\n(1 ou 2 ou 3):");
+                scanf("%d", &prioridade);
+                switch(prioridade){
+                    case 1:
+                        system("cls");
+                        printf("FILA PRIORIDADE 1:\n");
+                        imprimeFila(filaPrioridade1);
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        scanf("%d", &CodMod);
+                        system("cls");
+                        listaPendente = SetaPendencia(filaPrioridade1, CodMod, listaPendente);
+                    break;
+                    case 2:
+                        system("cls");
+                        printf("FILA PRIORIDADE 2:\n");
+                        imprimeFila(filaPrioridade2);
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        scanf("%d", &CodMod);
+                        system("cls");
+                        listaPendente = SetaPendencia(filaPrioridade2, CodMod, listaPendente);
+                    break;
+                    case 3:
+                        system("cls");
+                        printf("FILA PRIORIDADE 3:\n");
+                        imprimeFila(filaPrioridade3);
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        scanf("%d", &CodMod);
+                        system("cls");
+                        listaPendente = SetaPendencia(filaPrioridade3, CodMod, listaPendente);
+                    break;
+                    default:
+                        printf("Opcao invalida\n");
+                }
+        
+            break;
+                
             case 3:
                 system("cls");
                 printf("LISTA DE TAREFAS PENDENTES:\n");
@@ -391,35 +546,44 @@ while(i == 0){
                 printf("Digite o codigo da tarefa que deseja retirar pendencia na fila: ");
                 scanf("%d", &CodRet);
                 system("cls");
-                listaPendente =  RetiraPendencia(listaPendente, CodRet, fila);
+                listaPendente =  RetiraPendencia(listaPendente, CodRet, filaPrioridade1, filaPrioridade2, filaPrioridade3);
                 AtualizaStatus(fila);
-                break;
+                AtualizaStatus(filaPrioridade1);
+                AtualizaStatus(filaPrioridade2);
+                AtualizaStatus(filaPrioridade3);
+            break;
+
             case 4:
                 system("cls");
-                break;
-            default:
-                break;
-            }
             break;
+            default:
+            break;
+            }
+        break;
+
         case 5:
             system("cls");
             printf("LISTA DE TAREFAS PENDENTES:\n");
             imprimeLista(listaPendente);
-            break;
+        break;
+
         case 6:
             system("cls");
             printf("LISTA DE TAREFAS COCLUIDAS:\n");
             imprimeLista(lista);
-            break;
+        break;
+
         case 7:
             system("cls");
             ImprimiListaComESemAtraso(lista);
-            break;
+        break;
+
         case 8:
             system("cls");
             printf("FILA DE TAREFAS:\n");
             imprimeFila(fila);
-            break;
+        break;
+
         case 9:
             system("cls");
             printf("Ate mais!\n");
@@ -639,7 +803,7 @@ Lista* SetaPendencia(Fila *fila, int codigotarefa, Lista *listaPendente){
 }
 
 // função para retirar pendencia
-Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila){
+Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila1 , Fila *fila2 , Fila *fila3){
     Tarefa tarefaaux1 , tarefaaux2;
     Lista *listaaux = inicializaLista();
     Lista *aux = lista;
@@ -649,7 +813,18 @@ Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila){
             
             printf("tarefa retirada da lista de pendentes\n");
             imprimeTarefa(tarefaaux1);
-            insereFila (fila, tarefaaux1);
+            switch (tarefaaux1.prioridade)
+            {
+            case 1:
+                insereFila(fila1 , tarefaaux1);
+            break;
+            case 2:
+                insereFila(fila2 , tarefaaux1);
+            break;
+            case 3:
+                insereFila(fila3 , tarefaaux1);
+            break;
+            }
         }
         else{
             tarefaaux2 = aux -> tarefa;
@@ -690,4 +865,23 @@ int verificacodigo(Fila *fila, int codigotarefa){
         aux = aux->prox;
     }
     return 0;
+}
+
+//função para retirar tarefa da fila
+void retiraFila(Fila *fila, int codigotarefa){
+    Tarefa tarefaaux1 , tarefaaux2;
+    Fila *filaaux = criaFila();
+    No *aux = fila->ini;
+    while(aux != NULL){
+        if(aux->tarefa.codigoTarefa == codigotarefa){
+            tarefaaux1 = aux -> tarefa;
+        }
+        else{
+            tarefaaux2 = aux -> tarefa;
+            insereFila(filaaux, tarefaaux2);
+        }
+        aux = aux->prox;
+    }
+    fila-> ini = filaaux -> ini;
+    fila-> fim = filaaux -> fim;
 }
