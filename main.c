@@ -1,3 +1,15 @@
+/// Projeto 1 estrutura de dados
+///
+/// Gerenciamento de projeto
+///
+/// Giovani Bellini dos Santos
+/// RA 22007263
+///
+/// Victor de Melo Roston 
+/// RA 22006737
+
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -122,48 +134,48 @@ Tarefa modificatarefa (int codigotarefa, Fila *fila){
 
     tarefa.codigoTarefa = codigotarefa;
     while (getchar() != '\n');
-    printf("\nDigite o nome da tarefa: ");
+    printf("\n\tDigite o nome da tarefa:\n\t >");
     gets(tarefa.nomeTarefa);
-    printf("\nDigite o nome do projeto: ");
+    printf("\n\tDigite o nome do projeto:\n\t >");
     gets(tarefa.nomeProjeto);
 
-    printf("\nQual a prioridade da tarefa? (1 para Alta, 2 para normal, 3 paraBaixa)\n");
+    printf("\n\tQual a prioridade da tarefa? (1 para Alta, 2 para normal, 3 paraBaixa)\n\t >");
     scanf("%d", &tarefa.prioridade);
     while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
     {
-        printf("Prioridade invalida, digite novamente\n");
+        printf("\t\tPrioridade invalida, digite novamente\n\t\t >");
         scanf("%d", &tarefa.prioridade);
     }
     
-    printf("\ndigite a data de inicio (Atencao, digite o dia e de enter e assim por diante)\n");
+    printf("\n\tdigite a data de inicio (Atencao, digite o dia e de enter e assim por diante)\n");
     do{
-        printf("\nDigite o dia: ");
+        printf("\n\t\tDigite o dia: ");
         scanf("%d", &tarefa.dataInicio.dia);
         }while(tarefa.dataInicio.dia > 31 || tarefa.dataInicio.dia < 1);
     do{
-        printf("\nDigite o mes: ");
+        printf("\n\t\tDigite o mes: ");
         scanf("%d", &tarefa.dataInicio.mes);
         }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
     do{
-        printf("\nDigite o ano: ");
+        printf("\n\t\tDigite o ano: ");
         scanf("%d", &tarefa.dataInicio.ano);
     }while(tarefa.dataInicio.ano < dataatual.ano);
-    printf("\nComfirmacao da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
+    printf("\n\tConfirmacao da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
-    printf("\ndigite a data de termino (Atencao, digite o dia e de enter e assim por diante)\n");
+    printf("\n\tdigite a data de termino (Atencao, digite o dia e de enter e assim por diante)\n");
     do{
-        printf("\nDigite o dia: ");
+        printf("\n\t\tDigite o dia: ");
         scanf("%d", &tarefa.dataTermino.dia);
         }while(tarefa.dataTermino.dia > 31 || tarefa.dataTermino.dia < 1);
     do{
-        printf("\nDigite o mes: ");
+        printf("\n\t\tDigite o mes: ");
         scanf("%d", &tarefa.dataTermino.mes);
         }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
     do{
-        printf("\nDigite o ano: ");
+        printf("\n\t\tDigite o ano: ");
         scanf("%d", &tarefa.dataTermino.ano);
         }while(tarefa.dataTermino.ano < tarefa.dataInicio.ano || tarefa.dataTermino.ano < dataatual.ano);
-    printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("\nConfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     tarefa.status = 0;
     
     return tarefa;
@@ -180,11 +192,11 @@ Tarefa novatarefa(Fila *fila){
     while (flag == 0)
     {
        
-        printf("\nDigite o codigo da tarefa: ");
+        printf("\n\tDigite o codigo da tarefa:\n\t >");
         scanf("%d", &tarefa.codigoTarefa);
         while(verificacodigo(fila,tarefa.codigoTarefa)==1)
         {
-            printf("\nCodigo ja existente, digite outro codigo\nPor favor insira um novo codigo:\n");
+            printf("\n\tCodigo ja existente, por favor insira um novo codigo:\n\t >");
             scanf("%d", &tarefa.codigoTarefa);
             flag = 0;
         }
@@ -192,52 +204,52 @@ Tarefa novatarefa(Fila *fila){
     }
     while (getchar() != '\n');
 
-    printf("\nDigite o nome da tarefa: ");
+    printf("\n\tDigite o nome da tarefa:\n\t >");
     gets(tarefa.nomeTarefa);
 
-    printf("\nDigite o nome do projeto: ");
+    printf("\n\tDigite o nome do projeto:\n\t > ");
     gets(tarefa.nomeProjeto);
 
     /// Recebe a prioridade da tarefa, caso usuario digite errado uma nova tentativa é feita
     
-    printf("\nQual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n");
+    printf("\n\tQual a prioridade da tarefa? (1=Alta, 2=Normal, 3=Baixa)\n\t >");
     scanf("%d", &tarefa.prioridade);
     while(tarefa.prioridade > 3 || tarefa.prioridade < 1)
     {
-        printf("Prioridade invalida, digite novamente\n");
+        printf("\t\tPrioridade invalida, digite novamente\n\t\t >");
         scanf("%d", &tarefa.prioridade);
     }
     
 
-    printf("\ndigite a data de inicio (Atencao, digite o dia e de enter e assim por diante):\n");
+    printf("\n\tDigite a data de inicio (Atencao, digite o dia e de enter e assim por diante):\n");
     do{
-        printf("\nDigite o dia: ");
+        printf("\n\t\tDigite o dia: ");
         scanf("%d", &tarefa.dataInicio.dia);
     }while(tarefa.dataInicio.dia > 31 || tarefa.dataInicio.dia < 1);
     do{
-        printf("\nDigite o mes: ");
+        printf("\n\t\tDigite o mes: ");
         scanf("%d", &tarefa.dataInicio.mes);
     }while(tarefa.dataInicio.mes > 12 || tarefa.dataInicio.mes < 1);
     do{
-        printf("\nDigite o ano: ");
+        printf("\n\t\tDigite o ano: ");
         scanf("%d", &tarefa.dataInicio.ano);
     }while(tarefa.dataInicio.ano < dataatual.ano);
-    printf("\nComfirmacoa da data de inicio da tarefa: %d/%d/%d", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
+    printf("\n\tConfirmacoa da data de inicio da tarefa: %2d/%2d/%d\n", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
     
-    printf("\ndigite a data de termino (Atencao, digite o dia e de enter e assim por diante)\n"); 
+    printf("\n\tDigite a data de termino (Atencao, digite o dia e de enter e assim por diante)\n"); 
     do{
-        printf("\nDigite o dia: ");
+        printf("\n\t\tDigite o dia: ");
         scanf("%d", &tarefa.dataTermino.dia);
     }while(tarefa.dataTermino.dia > 31 || tarefa.dataTermino.dia < 1);
     do{
-        printf("\nDigite o mes: ");
+        printf("\n\t\tDigite o mes: ");
         scanf("%d", &tarefa.dataTermino.mes);
     }while(tarefa.dataTermino.mes > 12 || tarefa.dataTermino.mes < 1);
     do{
-        printf("\nDigite o ano: ");
+        printf("\n\t\tDigite o ano: ");
         scanf("%d", &tarefa.dataTermino.ano);
     }while(tarefa.dataTermino.ano < tarefa.dataInicio.ano || tarefa.dataTermino.ano < dataatual.ano);
-    printf("\nComfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("\n\tConfirmacao da data de termino da tarefa: %d/%d/%d \n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
     tarefa.status = 0;
     return tarefa;
 
@@ -271,26 +283,33 @@ Fila *trocatarefa(Fila *fila , int codigotarefa , Tarefa tarefa){
 
 /// Imprime a fila inteira
 void imprimeFila(Fila *fila){
-    No *aux = fila->ini;
-    while(aux != NULL){
-        printf("========================================================================\n");
-        printf("Codigo da tarefa: %d\n", aux->tarefa.codigoTarefa);
-        printf("Nome da tarefa: %s\n", aux->tarefa.nomeTarefa);
-        printf("Nome do projeto: %s\n", aux->tarefa.nomeProjeto);
-        printf("Prioridade da tarefa: %d\n", aux->tarefa.prioridade);
-        printf("Data de inicio da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataInicio.dia, aux->tarefa.dataInicio.mes, aux->tarefa.dataInicio.ano);
-        printf("Data de termino da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataTermino.dia, aux->tarefa.dataTermino.mes, aux->tarefa.dataTermino.ano);
-        printf("Status da tarefa: %d\n", aux->tarefa.status);
-        printf("========================================================================\n");
-        printf("\n");
-        aux = aux->prox;
+    if(fila->ini == NULL)
+    {
+        printf("Fila vazia\n");
+    }
+    else
+    {
+        No *aux = fila->ini;
+        while(aux != NULL){
+            printf("========================================================================\n");
+            printf("\tCodigo da tarefa: %d\n", aux->tarefa.codigoTarefa);
+            printf("\tNome da tarefa: %s\n", aux->tarefa.nomeTarefa);
+            printf("\tNome do projeto: %s\n", aux->tarefa.nomeProjeto);
+            printf("\tPrioridade da tarefa: %d\n", aux->tarefa.prioridade);
+            printf("\tData de inicio da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataInicio.dia, aux->tarefa.dataInicio.mes, aux->tarefa.dataInicio.ano);
+            printf("\tData de termino da tarefa: %2d/%2d/%2d\n", aux->tarefa.dataTermino.dia, aux->tarefa.dataTermino.mes, aux->tarefa.dataTermino.ano);
+            printf("\tStatus da tarefa: %d\n", aux->tarefa.status);
+            printf("========================================================================\n");
+            printf("\n");
+            aux = aux->prox;
+        }
     }
 }
 
 int main(){
 
     int i = 0;
-    Fila *fila = criaFila();
+    Fila *fila = criaFila(); /// Fila usada para armazenamento de toodos os codigos de tarefas
     Fila *filaPrioridade1 = criaFila();
     Fila *filaPrioridade2 = criaFila();
     Fila *filaPrioridade3 = criaFila();
@@ -317,10 +336,12 @@ int main(){
 while(i == 0){
     menu();
     int opcao = 0;
+    printf("\n\tEscolha uma opcao digitando o numero indicado de seu item\n\t >");
     scanf("%d", &opcao);
     system("cls");
     int prioridade = 0;
     switch(opcao){
+        opcao = 0;
         case 1:
         /// Cria uma nova tarefa e insere na fila
             printf("\nAdicionar uma nova tarefa\n");
@@ -365,7 +386,7 @@ while(i == 0){
                     system("cls");
                     printf("FILA PRIORIDADE 1:\n");
                     imprimeFila(filaPrioridade1);
-                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar(caso ele nao exista o programa cria uma tarefa nova):\n\t >");
                     scanf("%d", &codigo);
                     system("cls");
                     tarefa = modificatarefa(codigo , filaPrioridade1);
@@ -398,7 +419,7 @@ while(i == 0){
                     system("cls");
                     printf("FILA PRIORIDADE 2:\n");
                     imprimeFila(filaPrioridade2);
-                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar(caso ele nao exista o programa cria uma tarefa nova):\n\t >");
                     scanf("%d", &codigo);
                     system("cls");
                     tarefa = modificatarefa(codigo , filaPrioridade2);
@@ -430,7 +451,7 @@ while(i == 0){
                     system("cls");
                     printf("FILA PRIORIDADE 3 COM A NOVA TAREFA:\n");
                     imprimeFila(filaPrioridade3);
-                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar: ");
+                    printf("Modificar uma tarefa\nDigite o codigo da tarefa que deseja modificar(caso ele nao exista o programa cria uma tarefa nova):\n\t >");
                     scanf("%d", &codigo);
                     system("cls");
                     tarefa = modificatarefa(codigo , filaPrioridade3);
@@ -469,7 +490,7 @@ while(i == 0){
 
         case 3:
             system("cls");
-            printf("Digite de qual a prioridade da fila que desaja finalizar uma tarefa(1 ou 2 ou 3):\n");
+            printf("Digite de qual fila de prioridade que desaja finalizar uma tarefa (1 ou 2 ou 3):\n\t >");
             scanf("%d", &prioridade);
  
             switch(prioridade){
@@ -492,7 +513,7 @@ while(i == 0){
 
         case 4:
             printf("Atualizacao do status da tarefa\n");
-            printf("O que deseja fazer?\n1 -> Atualizar status de todas as tarefas: \n2 -> Colocar terafa como pendente: \n3 -> Retirar pendencia:\n4 -> Retornar ao menu:\n");
+            printf("O que deseja fazer?\n\t1.Atualizar status de todas as tarefas: \n\t2.Colocar terafa como pendente: \n\t3.Retirar pendencia:\n\t4.Retornar ao menu:\n\t >");
             scanf("%d", &resposta);
             switch (resposta)
             {
@@ -507,14 +528,14 @@ while(i == 0){
             case 2: 
                 system("cls");
 
-                printf("\nEm qual fila de voce deseja setar um tarefa como pendente?\n(1 ou 2 ou 3):");
+                printf("\nQual a prioridade da tarefa que voce deseja colocar como pendente? (1 ou 2 ou 3):\n\t >");
                 scanf("%d", &prioridade);
                 switch(prioridade){
                     case 1:
                         system("cls");
                         printf("FILA PRIORIDADE 1:\n");
                         imprimeFila(filaPrioridade1);
-                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes:\n\t >");
                         scanf("%d", &CodMod);
                         system("cls");
                         listaPendente = SetaPendencia(filaPrioridade1, CodMod, listaPendente);
@@ -523,7 +544,7 @@ while(i == 0){
                         system("cls");
                         printf("FILA PRIORIDADE 2:\n");
                         imprimeFila(filaPrioridade2);
-                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes:\n\t >");
                         scanf("%d", &CodMod);
                         system("cls");
                         listaPendente = SetaPendencia(filaPrioridade2, CodMod, listaPendente);
@@ -532,7 +553,7 @@ while(i == 0){
                         system("cls");
                         printf("FILA PRIORIDADE 3:\n");
                         imprimeFila(filaPrioridade3);
-                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes: ");
+                        printf("Digite o codigo da tarefa que deseja colocar na lista de pendentes:\n\t >");
                         scanf("%d", &CodMod);
                         system("cls");
                         listaPendente = SetaPendencia(filaPrioridade3, CodMod, listaPendente);
@@ -584,8 +605,17 @@ while(i == 0){
 
         case 8:
             system("cls");
-            printf("FILA DE TAREFAS:\n");
-            imprimeFila(fila);
+
+            printf("FILA PRIORIDADE 1:\n");
+            imprimeFila(filaPrioridade1);
+
+            printf("FILA PRIORIDADE 2:\n");
+            imprimeFila(filaPrioridade2);
+
+
+            printf("FILA PRIORIDADE 3:\n");
+            imprimeFila(filaPrioridade3);
+   
         break;
 
         case 9:
@@ -621,29 +651,35 @@ Lista *ConcluirTarefa(Fila *fila, Lista *lista){
     //retirada da primeira Tarefa da fila e colaca ela em um variavel auxiliar(tarefa)
     Tarefa tarefa;
     Data SistemData;
-    tarefa = fila->ini->tarefa;
-    fila->ini = ret_ini(fila->ini);
-    if(fila->ini==NULL)
-    fila->fim=NULL;
-    printf("Tarefa %d concluida com sucesso\n", tarefa.codigoTarefa);
+    if (fila->ini == NULL)
+    {
+        printf("Fila vazia\n");
+    }
+    else
+    {
+        tarefa = fila->ini->tarefa;
+        fila->ini = ret_ini(fila->ini);
+        if(fila->ini==NULL)
+        fila->fim=NULL;
+        printf("Tarefa %d concluida com sucesso\n", tarefa.codigoTarefa);
 
-    SistemData = recebeData();
+        SistemData = recebeData();
 
-    tarefa.dataTermino = SistemData;
+        tarefa.dataTermino = SistemData;
 
 
-    //função para inserir na lista encadeada
-    lista = insere (lista,tarefa);
+        //função para inserir na lista encadeada
+        lista = insere (lista,tarefa);
 
-    imprimeTarefa(tarefa);
-
+        imprimeTarefa(tarefa);
+    }
     return  lista;
 }
 
 // função de imprimir menu
 void menu(){
 
-    printf("\nEscolha uma opcao digitando o numero indicado de seu item\n\n");
+    printf("\nMENU PRINCIPAL\n\n");
     printf("\t1. Adicionar uma nova tarefa\n");
     printf("\t2. Modificar uma tarefa\n");
     printf("\t3. Concluir uma tarefa\n");
@@ -670,13 +706,13 @@ Data recebeData(){
 // função para imprimir tarefa
 void imprimeTarefa(Tarefa tarefa){
     printf("========================================================================\n");
-    printf("Codigo da tarefa: %d\n", tarefa.codigoTarefa);
-    printf("Nome da tarefa: %s\n", tarefa.nomeTarefa);
-    printf("Nome do projeto: %s\n", tarefa.nomeProjeto);
-    printf("Prioridade da tarefa: %d\n", tarefa.prioridade);
-    printf("Data de inicio da tarefa: %2d/%2d/%2d\n", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
-    printf("Data de termino da tarefa: %2d/%2d/%2d\n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
-    printf("Status da tarefa: %d\n", tarefa.status);
+    printf("\tCodigo da tarefa: %d\n", tarefa.codigoTarefa);
+    printf("\tNome da tarefa: %s\n", tarefa.nomeTarefa);
+    printf("\tNome do projeto: %s\n", tarefa.nomeProjeto);
+    printf("\tPrioridade da tarefa: %d\n", tarefa.prioridade);
+    printf("\tData de inicio da tarefa: %2d/%2d/%2d\n", tarefa.dataInicio.dia, tarefa.dataInicio.mes, tarefa.dataInicio.ano);
+    printf("\tData de termino da tarefa: %2d/%2d/%2d\n", tarefa.dataTermino.dia, tarefa.dataTermino.mes, tarefa.dataTermino.ano);
+    printf("\tStatus da tarefa: %d\n", tarefa.status);
     printf("========================================================================\n");
     printf("\n");
 }
@@ -728,64 +764,64 @@ void AtualizaStatus(Fila *fila){
     Data dataSistem = recebeData();
     int FlagMes = 0, FlagAno = 0;  
 
-    while (aux != NULL)
-    {
-    FlagMes = 0;
-    FlagAno = 0;
-        if (aux->tarefa.dataTermino.ano > dataSistem.ano){
-            FlagAno = 1; 
-        }
-        else if(aux->tarefa.dataTermino.ano == dataSistem.ano){
-            FlagAno = 2;
-        }
-        else if(aux->tarefa.dataTermino.ano < dataSistem.ano){
-            FlagAno = 3;
-        }
-
-        switch(FlagAno)
+        while (aux != NULL)
         {
-        case(1):
-            aux->tarefa.status = 0;
-        break;
-        case(2):
-            if (aux->tarefa.dataTermino.mes > dataSistem.mes){
-                FlagMes = 1;
+        FlagMes = 0;
+        FlagAno = 0;
+            if (aux->tarefa.dataTermino.ano > dataSistem.ano){
+                FlagAno = 1; 
             }
-            else if(aux->tarefa.dataTermino.mes == dataSistem.mes){
-                FlagMes = 2;
+            else if(aux->tarefa.dataTermino.ano == dataSistem.ano){
+                FlagAno = 2;
             }
-            else if(aux->tarefa.dataTermino.mes < dataSistem.mes){
-                FlagMes = 3;
+            else if(aux->tarefa.dataTermino.ano < dataSistem.ano){
+                FlagAno = 3;
             }
-            switch(FlagMes)
+
+            switch(FlagAno)
             {
             case(1):
                 aux->tarefa.status = 0;
             break;
             case(2):
-                if(aux->tarefa.dataTermino.dia > dataSistem.mes)
-                {
-                    aux->tarefa.status = 1;
+                if (aux->tarefa.dataTermino.mes > dataSistem.mes){
+                    FlagMes = 1;
                 }
-                else
+                else if(aux->tarefa.dataTermino.mes == dataSistem.mes){
+                    FlagMes = 2;
+                }
+                else if(aux->tarefa.dataTermino.mes < dataSistem.mes){
+                    FlagMes = 3;
+                }
+                switch(FlagMes)
                 {
+                case(1):
                     aux->tarefa.status = 0;
+                break;
+                case(2):
+                    if(aux->tarefa.dataTermino.dia > dataSistem.mes)
+                    {
+                        aux->tarefa.status = 1;
+                    }
+                    else
+                    {
+                        aux->tarefa.status = 0;
+                    }
+                break;
+                case(3):
+                    aux->tarefa.status = 1;
+                break;
                 }
-            break;
+                break;
             case(3):
                 aux->tarefa.status = 1;
             break;
-            }
+            default:
             break;
-        case(3):
-            aux->tarefa.status = 1;
-        break;
-        default:
-        break;
-        }
-        aux = aux->prox;
+            }
+            aux = aux->prox;
     }
-
+    
 }
 
 // função para setar pendencia
@@ -793,22 +829,29 @@ Lista* SetaPendencia(Fila *fila, int codigotarefa, Lista *listaPendente){
     Tarefa tarefaaux1 , tarefaaux2;
     Fila *filaaux = criaFila();
     No *aux = fila->ini;
-    while(aux != NULL){
-        if(aux->tarefa.codigoTarefa == codigotarefa){
-            tarefaaux1 = aux -> tarefa;
-            tarefaaux1.status = -1;
-            listaPendente = insere(listaPendente, tarefaaux1);
-            printf("Lista de pendentes\n");
-            imprimeLista(listaPendente);
-        }
-        else{
-            tarefaaux2 = aux -> tarefa;
-            insereFila(filaaux, tarefaaux2);
-        }
-        aux = aux->prox;
+    if(fila->ini == NULL)
+    {
+        printf("Fila vazia\n");
     }
-    fila-> ini = filaaux -> ini;
-    fila-> fim = filaaux -> fim;
+    else
+    {
+        while(aux != NULL){
+            if(aux->tarefa.codigoTarefa == codigotarefa){
+                tarefaaux1 = aux -> tarefa;
+                tarefaaux1.status = -1;
+                listaPendente = insere(listaPendente, tarefaaux1);
+                printf("Lista de pendentes\n");
+                imprimeLista(listaPendente);
+            }
+            else{
+                tarefaaux2 = aux -> tarefa;
+                insereFila(filaaux, tarefaaux2);
+            }
+            aux = aux->prox;
+        }
+        fila-> ini = filaaux -> ini;
+        fila-> fim = filaaux -> fim;
+    }
     return listaPendente;
 }
 
@@ -849,19 +892,26 @@ Lista* RetiraPendencia(Lista *lista, int codigotarefa, Fila *fila1 , Fila *fila2
 void ImprimiListaComESemAtraso(Lista *lista){
     Lista *listaux1 = lista;
     Lista *listaux2 = lista;
-    printf("->TAREFAS CONCLUIDAS SEM ATRASO:\n");
-    while(listaux1 != NULL){
-        if(listaux1->tarefa.status == 0){
-            imprimeTarefa(listaux1->tarefa);
-        }
-        listaux1 = listaux1->prox;
+    if(vazia(lista))
+    {
+        printf("\n\t => LISTA VAZIA <==\n ");
     }
-    printf("->TAREFAS CONCLUIDAS COM ATRASO:\n");
-    while(listaux2 != NULL){
-        if(listaux2->tarefa.status == 1){
-            imprimeTarefa(listaux2->tarefa);
+    else
+    {
+        printf("->TAREFAS CONCLUIDAS SEM ATRASO:\n");
+        while(listaux1 != NULL){
+            if(listaux1->tarefa.status == 0){
+                imprimeTarefa(listaux1->tarefa);
+            }
+            listaux1 = listaux1->prox;
         }
-        listaux2 = listaux2->prox;
+        printf("->TAREFAS CONCLUIDAS COM ATRASO:\n");
+        while(listaux2 != NULL){
+            if(listaux2->tarefa.status == 1){
+                imprimeTarefa(listaux2->tarefa);
+            }
+            listaux2 = listaux2->prox;
+        }
     }
 }
 
